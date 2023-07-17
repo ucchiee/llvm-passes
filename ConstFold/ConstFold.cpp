@@ -11,7 +11,7 @@
 #include "llvm/Support/raw_ostream.h"
 
 //
-// opt -load-pass-plugin ./build/LLVMConstFoldPass.so -passes="const-opt" test.ll -S
+// opt -load-pass-plugin ./build/LLVMConstFoldPass.so -passes="const-fold" test.ll -S
 //
 
 using namespace llvm;
@@ -75,7 +75,7 @@ llvmGetPassPluginInfo() {
             PB.registerPipelineParsingCallback(
                 [](StringRef Name, FunctionPassManager &FPM,
                     ArrayRef<PipelineElement>) {
-                  if (Name == "const-opt") {
+                  if (Name == "const-fold") {
                     FPM.addPass(ConstOpt());
                     return true;
                   }
