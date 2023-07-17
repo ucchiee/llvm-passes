@@ -11,7 +11,7 @@
 #include "llvm/Support/raw_ostream.h"
 
 //
-// opt -load-pass-plugin ./build/ConstOpt.so -passes="const-opt" test.ll -S
+// opt -load-pass-plugin ./build/LLVMConstFoldPass.so -passes="const-opt" test.ll -S
 //
 
 using namespace llvm;
