@@ -24,3 +24,5 @@ if (${LLVM_VERSION_MAJOR} VERSION_GREATER_EQUAL 10)
     set(CMAKE_CXX_STANDARD 14)
 endif ()
 message(STATUS "Using LLVM version ${LLVM_PACKAGE_VERSION}")
+
+add_subdirectory(ConstFold)
