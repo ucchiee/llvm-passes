@@ -17,7 +17,7 @@
 using namespace llvm;
 
 namespace {
-class ConstOpt : public PassInfoMixin<ConstOpt> {
+class ConstFold : public PassInfoMixin<ConstFold> {
   std::vector<Instruction *> constAdds;
   void findConstAdds(Function &F);
   void constantFold(Instruction *I);
@@ -28,7 +28,7 @@ public:
 };
 } // end anonymous namespace
 
-PreservedAnalyses ConstOpt::run(Function &F, FunctionAnalysisManager &FAM) {
+PreservedAnalyses ConstFold::run(Function &F, FunctionAnalysisManager &FAM) {
   auto PA = PreservedAnalyses::all();
 
   findConstAdds(F);
@@ -43,7 +43,7 @@ PreservedAnalyses ConstOpt::run(Function &F, FunctionAnalysisManager &FAM) {
   return PA;
 }
 
-void ConstOpt::findConstAdds(Function &F) {
+void ConstFold::findConstAdds(Function &F) {
   constAdds.clear();
   for (auto &I : instructions(F)) {
     if (I.getOpcode() == Instruction::Add) {
@@ -55,7 +55,7 @@ void ConstOpt::findConstAdds(Function &F) {
   }
 }
 
-void ConstOpt::constantFold(Instruction *I) {
+void ConstFold::constantFold(Instruction *I) {
   auto *lhs = cast<ConstantInt>(I->getOperand(0));
   auto *rhs = cast<ConstantInt>(I->getOperand(1));
 
@@ -69,14 +69,14 @@ void ConstOpt::constantFold(Instruction *I) {
 
 extern "C" ::llvm::PassPluginLibraryInfo LLVM_ATTRIBUTE_WEAK
 llvmGetPassPluginInfo() {
-  return {LLVM_PLUGIN_API_VERSION, "ConstOpt", "v0.1", [](PassBuilder &PB) {
+  return {LLVM_PLUGIN_API_VERSION, "ConstFold", "v0.1", [](PassBuilder &PB) {
             // using OptimizationLevel= typename PassBuilder::OptimizationLevel;
             using PipelineElement = typename PassBuilder::PipelineElement;
             PB.registerPipelineParsingCallback(
                 [](StringRef Name, FunctionPassManager &FPM,
                     ArrayRef<PipelineElement>) {
                   if (Name == "const-fold") {
-                    FPM.addPass(ConstOpt());
+                    FPM.addPass(ConstFold());
                     return true;
                   }
                   return false;
