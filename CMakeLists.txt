@@ -27,3 +27,4 @@ message(STATUS "Using LLVM version ${LLVM_PACKAGE_VERSION}")
 
 add_subdirectory(ConstFold)
 add_subdirectory(FenceBeforeJC/)
+add_subdirectory(X86LFenceBeforeJC/)
