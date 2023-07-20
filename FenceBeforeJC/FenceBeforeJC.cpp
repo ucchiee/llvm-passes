@@ -1,4 +1,4 @@
-#include "FenceAgainstSpectre.h"
+#include "FenceBeforeJC.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/IR/Constants.h"
@@ -14,13 +14,12 @@
 #include "llvm/Support/raw_ostream.h"
 
 //
-// opt -load-pass-pluginbuild/LLVMFenceAgainstSpectrePass.so
-// -passes="fence" test.ll -S
+// opt -load-pass-pluginbuild/FenceBeforeJCPass.so -passes="fence" test.ll -S
 //
 
 using namespace llvm;
 
-PreservedAnalyses FenceAgainstSpectre::run(
+PreservedAnalyses FenceBeforeJC::run(
     Function &F, FunctionAnalysisManager &FAM) {
   IRBuilder<> builder(F.getContext());
 
@@ -60,15 +59,15 @@ PreservedAnalyses FenceAgainstSpectre::run(
 
 extern "C" ::llvm::PassPluginLibraryInfo LLVM_ATTRIBUTE_WEAK
 llvmGetPassPluginInfo() {
-  return {LLVM_PLUGIN_API_VERSION, "FenceAgainstSpectre", "v0.1",
-      [](PassBuilder &PB) {
+  return {
+      LLVM_PLUGIN_API_VERSION, "FenceBeforeJC", "v0.1", [](PassBuilder &PB) {
         // using OptimizationLevel= typename PassBuilder::OptimizationLevel;
         using PipelineElement = typename PassBuilder::PipelineElement;
         PB.registerPipelineParsingCallback(
             [](StringRef Name, FunctionPassManager &FPM,
                 ArrayRef<PipelineElement>) {
               if (Name == "fence") {
-                FPM.addPass(FenceAgainstSpectre());
+                FPM.addPass(FenceBeforeJC());
                 return true;
               }
               return false;
