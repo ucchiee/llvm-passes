@@ -5,9 +5,16 @@ Collection of my LLVM Passes.
 ## How to build
 
 ```
-cmake -B build
-cd build
-cmake --build .
+cmake -B ./build
+cmake --build ./build
+```
+
+FenceAgainstSpectre:
+
+```
+cmake --build ./build
+opt --load-pass-plugin=build/FenceAgainstSpectre/LLVMFenceAgainstSpectrePass.so --passes="fence" -S -o mod.ll FenceAgainstSpectre/test/test.ll
+clang mod.ll -S
 ```
 
 ## Misc

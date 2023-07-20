@@ -26,4 +26,4 @@ endif ()
 message(STATUS "Using LLVM version ${LLVM_PACKAGE_VERSION}")
 
 add_subdirectory(ConstFold)
-add_subdirectory(LfenceAgainstSpectre)
+add_subdirectory(FenceAgainstSpectre)
