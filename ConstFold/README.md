@@ -1,9 +1,9 @@
-# ConsFold
+# ConstFold
 
 How to use:
 
 1. Build (Ref. [here](../README.md)), or:
-   ````
+   ```
    cmake --build ../build
    ```
 1. Load this Pass using `clang`:
