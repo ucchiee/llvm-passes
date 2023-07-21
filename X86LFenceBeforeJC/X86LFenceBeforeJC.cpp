@@ -51,14 +51,11 @@ llvmGetPassPluginInfo() {
       [](PassBuilder &PB) {
         // using OptimizationLevel= typename PassBuilder::OptimizationLevel;
         using PipelineElement = typename PassBuilder::PipelineElement;
-        PB.registerPipelineParsingCallback(
-            [](StringRef Name, FunctionPassManager &FPM,
-                ArrayRef<PipelineElement>) {
-              if (Name == "fence") {
-                FPM.addPass(X86LFenceBeforeJC());
-                return true;
-              }
-              return false;
+        PB.registerPipelineEarlySimplificationEPCallback(
+            [&](ModulePassManager &MPM, auto) {
+              MPM.addPass(
+                  createModuleToFunctionPassAdaptor(X86LFenceBeforeJC()));
+              return true;
             });
       }};
 }
