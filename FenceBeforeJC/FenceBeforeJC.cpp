@@ -45,15 +45,10 @@ llvmGetPassPluginInfo() {
   return {
       LLVM_PLUGIN_API_VERSION, "FenceBeforeJC", "v0.1", [](PassBuilder &PB) {
         // using OptimizationLevel= typename PassBuilder::OptimizationLevel;
-        using PipelineElement = typename PassBuilder::PipelineElement;
-        PB.registerPipelineParsingCallback(
-            [](StringRef Name, FunctionPassManager &FPM,
-                ArrayRef<PipelineElement>) {
-              if (Name == "fence") {
-                FPM.addPass(FenceBeforeJC());
-                return true;
-              }
-              return false;
+        PB.registerPipelineEarlySimplificationEPCallback(
+            [&](ModulePassManager &MPM, auto) {
+              MPM.addPass(createModuleToFunctionPassAdaptor(FenceBeforeJC()));
+              return true;
             });
       }};
 }
