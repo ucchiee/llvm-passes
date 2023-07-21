@@ -2,20 +2,19 @@
 
 Collection of my LLVM Passes.
 
-## How to build
+## How to build all the Passes
 
 ```
+cd path/to/llvm-passes
 cmake -B ./build
 cmake --build ./build
 ```
 
-FenceAgainstSpectre:
+Pass list:
 
-```
-cmake --build ./build
-opt --load-pass-plugin=build/FenceAgainstSpectre/LLVMFenceAgainstSpectrePass.so --passes="fence" -S -o mod.ll FenceAgainstSpectre/test/test.ll
-clang mod.ll -S
-```
+- [ConstFold](./ConstFold)
+- [FenceBeforeJC](./FenceBeforeJC)
+- [X86LFenceBeforeJC](./X86LFenceBeforeJC)
 
 ## Misc
 
