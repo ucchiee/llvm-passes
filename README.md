@@ -1,6 +1,6 @@
 # llvm-passes
 
-Collection of my LLVM Passes.
+A collection of my LLVM Passes.
 
 ## How to build all the Passes
 
