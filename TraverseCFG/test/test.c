@@ -1,11 +1,19 @@
+#include <stdint.h>
 #include <stdio.h>
-int main(int argc, char **argv) {
-  int a;
-  if (argc == 1) {
-    a += 10;
-  } else {
-    a += 20;
+#include <stdlib.h>
+
+unsigned int array1_size = 16;
+uint8_t array1[16];
+uint8_t array2[256 * 512];
+uint8_t temp = 0;
+
+void victim_fun(int idx) {
+  if (idx < 16) {
+    temp &= array2[array1[idx] * 512];
   }
-  printf("%d\n", a);
+}
+
+int main(int argn, char *args[]) {
+  victim_fun(atoi(args[1]));
   return 0;
 }
