@@ -41,3 +41,7 @@ Tested on:
 | ------------ | --------------------------------------------------------------- |
 | llvm-project | `088f33605d8a61ff519c580a71b1dd57d16a03f8` (= `llvmorg-15.0.6`) |
 | cmake        | 3.16.3                                                          |
+
+## Ref
+
+- https://stackoverflow.com/questions/54447985/how-to-automatically-register-and-load-modern-pass-in-clang/75999804#75999804
